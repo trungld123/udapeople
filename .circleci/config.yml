@@ -27,6 +27,20 @@ jobs:
           command: |
             # Mã kiểm tra lỗ hổng bảo mật phần backend
 
+  build-frontend:
+    docker:
+      - image: circleci/node:13.8.0
+
+    steps:
+      - checkout
+
+      - run:
+          name: Build Frontend
+          command: |
+            cd frontend
+            npm install
+            npm run build
+
 workflows:
   version: 2
   build:
