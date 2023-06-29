@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  build-frontend:
+  scan-frontend:
     docker:
       - image: circleci/node:13.8.0
 
@@ -9,13 +9,13 @@ jobs:
       - checkout
 
       - run:
-          name: Build Frontend
+          name: Scan Frontend
           command: |
             cd frontend
             npm install
-            npm run build
+            npm audit --audit-level=critical
 
-  build-backend:
+  scan-backend:
     docker:
       - image: circleci/node:13.8.0
 
@@ -23,13 +23,21 @@ jobs:
       - checkout
 
       - run:
-          name: Build Backend
+          name: Scan Backend
           command: |
-            # Mã xây dựng/compile backend
+            # Mã kiểm tra lỗ hổng bảo mật phần backend
 
 workflows:
   version: 2
   build:
     jobs:
-      - build-frontend
-      - build-backend
+      - scan-frontend
+      - scan-backend:
+          requires:
+            - scan-frontend
+      - build-frontend:
+          requires:
+            - scan-backend
+      - build-backend:
+          requires:
+            - scan-backend
