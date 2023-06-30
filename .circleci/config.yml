@@ -47,6 +47,22 @@ commands:
             - project/.circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure
 
+jobs:
+  destroy-environment:
+    executor: aws-cli-executor
+    steps:
+      - destroy-environment
+
+  deploy-infrastructure:
+    executor: aws-cli-executor
+    steps:
+      - deploy-infrastructure
+
+executors:
+  aws-cli-executor:
+    docker:
+      - image: YOUR_AWS_CLI_SUPPORTED_IMAGE
+
 workflows:
   version: 2
   default:
