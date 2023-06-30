@@ -11,7 +11,7 @@ commands:
       - run:
           name: Destroy Environment
           command: |
-            # Destroy Environment
+            # Steps to destroy the environment upon failure
             aws your-destroy-command
 
 workflows:
@@ -28,11 +28,10 @@ jobs:
     executor: default-executor
     steps:
       - checkout
-      # deploy
+      # Steps for deploying your application
 
   destroy:
     executor: default-executor
     steps:
       - checkout
-      - destroy-environment:
-          background: false
+      - destroy-environment
